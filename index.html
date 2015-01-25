@@ -37,7 +37,7 @@ var parseDate = d3.time.format("%d-%b-%y").parse;
 var x = d3.time.scale().range([0, width]);
 var y = d3.scale.linear().range([height, 0]);
 
-// Define the axes
+// Define the axes. on what scale to operate(x or y)-where label appear- how many ticks to include on the axis. 
 var xAxis = d3.svg.axis().scale(x)
     .orient("bottom").ticks(5);
 
@@ -49,20 +49,17 @@ var valueline = d3.svg.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.close); });
     
-// Adds the svg canvas
+// Adds the svg canvas- jquery(insert the content and give attributes)
 var svg = d3.select("body")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", 
-              "translate(" + margin.left + "," + margin.top + ")");
-
-// Get the data
+    
+// Get the data(csv- comma seprated values)-function is pointed to the data file that should be loaded- 
 d3.csv("data.csv", function(error, data) {
-    data.forEach(function(d) {
-        d.date = parseDate(d.date);
-        d.close = +d.close;
+    data.forEach(function(d) { //set the data variable that is being dealt with and tells the block of code that for each group within the data array it should carry out a function on them. the function is designated 'd'.
+        d.date = parseDate(d.date); //takes the raw data info from csv file and converts into a format that D3 can then process. 
+        d.close = +d.close; //set close value to a numeric value using + operator. 
     });
 
     // Scale the range of the data
